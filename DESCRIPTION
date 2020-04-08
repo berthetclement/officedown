@@ -23,3 +23,4 @@ Imports: knitr,
  rvg (>= 0.2.2)
 RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
+Remotes: davidgohel/officer
