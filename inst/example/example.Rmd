@@ -1,0 +1,70 @@
+---
+date: "`r Sys.Date()`"
+author: "Your Name"
+title: "Untitled"
+output: 
+  bookdown::markdown_document2:
+    base_format: "officedown::rdocx_document"
+    reference_docx: template.docx
+    tab_caption: 
+      style: "table title"
+      pre: "Table "
+      sep: ": "
+      lp: "tab:"
+    plot_caption: 
+      style: "graphic title"
+      pre: "Figure "
+      sep: ": "
+      lp: "fig:"
+    tab.style: "Grid Table 4 Accent 2"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.cap = TRUE)
+library(officedown)
+```
+
+
+<!---CHUNK_PAGEBREAK--->
+
+## Tables 
+
+### Table 1
+
+
+```{r tab.cap="caption 1", tab.id="mtcars", tab.style = "table_template"}
+head(mtcars)
+```
+
+### Table 2
+
+```{r tab.cap="iris"}
+head(iris)
+```
+
+### Table 3
+
+```{r tab.cap="cars", tab.id="cars"}
+head(cars)
+```
+
+
+## Figures 
+
+
+### Figure 1
+
+```{r fig.cap="A boxplot", fig.id = "boxplot", fig.cap.style="Captioned Figure"}
+boxplot(1:8)
+```
+
+### Figure 3
+
+```{r fig.cap.style="Captioned Figure"}
+barplot(1:8)
+```
+
+## References
+
+see \@ref(fig:boxplot) and \@ref(tab:mtcars)!
+
