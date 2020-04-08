@@ -25,20 +25,6 @@ process_images <- function( x ){
 }
 
 
-htmlEscape <- function( text ){
-  specials <- list( `&` = '&amp;', `<` = '&lt;', `>` = '&gt;' )
-  pattern <- paste(names(specials), collapse='|')
-  if (any(grepl(pattern, text, useBytes = TRUE))){
-    for (chr in names(specials)) {
-      text <- gsub(chr, specials[[chr]], text, fixed = TRUE, useBytes = TRUE)
-    }
-  }
-  text
-}
-
-
-
-
 process_links <- function( rdoc ){
   rel <- rdoc$doc_obj$relationship()
   hl_nodes <- xml_find_all(rdoc$doc_obj$get(), "//w:hyperlink[@r:id]")
@@ -49,7 +35,7 @@ process_links <- function( rdoc ){
 
     rel$add(
       id = rid, type = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
-      target = htmlEscape(hl_ref[i]), target_mode = "External" )
+      target = htmlEscapeCopy(hl_ref[i]), target_mode = "External" )
 
     which_match_id <- grepl( hl_ref[i], xml_attr(which_to_add, "id"), fixed = TRUE )
     xml_attr(which_to_add[which_match_id], "r:id") <- rep(rid, sum(which_match_id))

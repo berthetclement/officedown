@@ -2,7 +2,7 @@
 #' @description Function used to render DrawingML in knitr/rmarkdown documents.
 #' Only Powerpoint outputs currently supported
 #'
-#' @param x a \code{dml} object
+#' @param x a `dml` object
 #' @param ... further arguments, not used.
 #' @author Noam Ross
 #' @importFrom knitr knit_print asis_output opts_knit opts_current

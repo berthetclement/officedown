@@ -10,7 +10,7 @@
 #' A section starts at the end of the previous section (or the beginning of
 #' the document if no preceding section exists), and stops where the section is declared.
 #' @param w,h width and height in inches of the section page. This will
-#' be ignored if the default section (of the \code{reference_docx} file)
+#' be ignored if the default section (of the `reference_docx` file)
 #' already has width and height.
 #' @export
 #' @rdname sections
@@ -82,7 +82,7 @@ block_section_columns <- function(widths = c(2.5,2.5), space = .25, sep = FALSE)
 #' Markdown document. A column break is a code inserted in a
 #' paragraph the tells Word where to end the current column
 #' and begin the next.
-#' @seealso \code{\link{sections}}
+#' @seealso [sections()]
 chunk_column_break <- function(){
   str <- "<w:r><w:br w:type=\"column\"/></w:r>"
   class(str) <- "ooxml_chunk"
@@ -224,8 +224,8 @@ chunk_text_stylenamed <- function( str, style ){
 #' @param underlined is underlined
 #' @param font single character value specifying font name.
 #' @param valign single character value specifying font vertical alignments.
-#' Expected value is one of the following : default \code{'baseline'}
-#' or \code{'subscript'} or \code{'superscript'}
+#' Expected value is one of the following : default `'baseline'`
+#' or `'subscript'` or `'superscript'`
 #' @param shading shading color - a single character value specifying
 #' a valid color (e.g. "#000000" or "black").
 #' @examples

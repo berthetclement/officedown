@@ -3,9 +3,9 @@
 #' @description Format for converting from R Markdown to an MS PowerPoint
 #' document.
 #' @param base_format a scalar character, format to be used as a base document for
-#' officedown. default to \link[rmarkdown]{powerpoint_presentation} but
+#' officedown. default to [powerpoint_presentation][rmarkdown::powerpoint_presentation] but
 #' can also be powerpoint_presentation2 from bookdown
-#' @param ... arguments used by \link[rmarkdown]{powerpoint_presentation}
+#' @param ... arguments used by [powerpoint_presentation][rmarkdown::powerpoint_presentation]
 rpptx_document <- function(base_format = "rmarkdown::powerpoint_presentation", ...) {
 
   base_format <- get_fun(base_format)

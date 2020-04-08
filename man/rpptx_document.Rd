@@ -8,10 +8,10 @@ rpptx_document(base_format = "rmarkdown::powerpoint_presentation", ...)
 }
 \arguments{
 \item{base_format}{a scalar character, format to be used as a base document for
-officedown. default to \link[rmarkdown]{powerpoint_presentation} but
+officedown. default to \link[rmarkdown:powerpoint_presentation]{powerpoint_presentation} but
 can also be powerpoint_presentation2 from bookdown}
 
-\item{...}{arguments used by \link[rmarkdown]{powerpoint_presentation}}
+\item{...}{arguments used by \link[rmarkdown:powerpoint_presentation]{powerpoint_presentation}}
 }
 \description{
 Format for converting from R Markdown to an MS PowerPoint

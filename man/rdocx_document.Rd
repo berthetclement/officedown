@@ -4,7 +4,14 @@
 \alias{rdocx_document}
 \title{Convert to an MS Word document}
 \usage{
-rdocx_document(mapstyles, base_format = "rmarkdown::word_document", ...)
+rdocx_document(
+  mapstyles,
+  base_format = "rmarkdown::word_document",
+  tab_caption = list(),
+  plot_caption = list(),
+  tab.style = "Table",
+  ...
+)
 }
 \arguments{
 \item{mapstyles}{a named list of style to be replaced in the generated
@@ -13,15 +20,67 @@ all paragraphs styled with stylename "Date" will be styled with
 stylename "Author".}
 
 \item{base_format}{a scalar character, format to be used as a base document for
-officedown. default to \link[rmarkdown]{word_document} but
+officedown. default to \link[rmarkdown:word_document]{word_document} but
 can also be word_document2 from bookdown}
 
-\item{...}{arguments used by \link[rmarkdown]{word_document}}
+\item{tab_caption}{a list that can contain items \code{style}, \code{pre} and \code{sep}:
+\itemize{
+\item style: the Word style name to use for table captions.
+\item pre: the prefix for numbering chunk (default to "Table ").
+\item sep: the suffix for numbering chunk (default to ": ").
+}
+
+The default is producing a numbering chunk of the form "Table 2: ".
+
+Default values are \code{list(style = "Table Caption", pre = "Table ", sep = ": ")}.
+
+Missing items will be replace by default values, e.g. \code{list(pre="tab.")}
+will produce "tab. 2: ".}
+
+\item{plot_caption}{a list that can contain items \code{style}, \code{pre} and \code{sep}:
+\itemize{
+\item style: the Word style name to use for figure captions.
+\item pre: the prefix for numbering chunk (default to "Figure ").
+\item sep: the suffix for numbering chunk (default to ": ").
+}
+
+The default is producing a numbering chunk of the form "Figure 2: ".
+
+Default values are \code{list(style = "Figure Caption", pre = "Figure ", sep = ": ")}.
+
+Missing items will be replace by default values, e.g. \code{list(pre="fig.")}
+will produce "fig. 2: ".}
+
+\item{tab.style}{default table style. This is the name of the Word style to
+use for tables. It can be read with \code{officer::styles_info()} or within
+Word table styles view.}
+
+\item{...}{arguments used by \link[rmarkdown:word_document]{word_document}}
 }
 \description{
 Format for converting from R Markdown to an MS Word
 document. The function comes also with improved output options.
 }
+\section{R Markdown yaml}{
+
+The following demonstrates how to pass arguments in the R Markdown yaml:\preformatted{---
+title: "Word document"
+output:
+  bookdown::markdown_document2:
+  base_format: officedown::rdocx_document
+  tab_caption:
+    style: "Table Caption"
+    pre: "Table "
+    sep: ": "
+  plot_caption:
+    style: "Captioned Figure"
+    pre: "Figure "
+    sep: ": "
+  tab.style: "Light List Accent 2"
+---
+}
+}
+
 \examples{
 skeleton <- system.file(package = "officedown",
   "rmarkdown/templates/word/skeleton/skeleton.Rmd")

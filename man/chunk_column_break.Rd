@@ -13,5 +13,5 @@ paragraph the tells Word where to end the current column
 and begin the next.
 }
 \seealso{
-\code{\link{sections}}
+\code{\link[=sections]{sections()}}
 }
