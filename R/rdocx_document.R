@@ -60,11 +60,11 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
 #' Word table styles view.
 #' @param ... arguments used by [word_document][rmarkdown::word_document]
 #' @examples
-#' skeleton <- system.file(package = "officedown",
-#'   "rmarkdown/templates/word/skeleton/skeleton.Rmd")
-#' file.copy(skeleton, to = "officedown.Rmd")
 #' library(rmarkdown)
-#' render("officedown.Rmd", output_file = "officedown.docx")
+#' skeleton <- system.file(package = "officedown",
+#'                         "example/example.Rmd")
+#' docx_file_1 <- tempfile(fileext = ".docx")
+#' render(skeleton, output_file = docx_file_1)
 #' @importFrom officer change_styles
 #' @section R Markdown yaml:
 #' The following demonstrates how to pass arguments in the R Markdown yaml:

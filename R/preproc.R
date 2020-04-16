@@ -32,7 +32,9 @@ is_match <- function(str, regex){
 # to ooxml ----
 #' @importFrom yaml yaml.load
 chunk_to_ooxml <- function(text, fname, type) {
-  text <- str_extract(text, paste0("(", yaml_pattern, "){0,1}[ ]*--->") )
+  regex <- paste0("(", yaml_pattern, "){0,1}[ ]*--->")
+  gmatch <- regexpr(regex, text)
+  text <- regmatches(text, gmatch)
   text <- gsub("[ ]*--->$", "", text)
   sapply( text, function(x, fname, type) {
     x <- yaml.load(x)
@@ -44,12 +46,12 @@ chunk_to_ooxml <- function(text, fname, type) {
 }
 
 ooxml_values <- function(txt, regex, fname, type){
-  all_extracts <- str_extract_all(txt, regex )
+  gmatch <- gregexpr(regex, txt)
+  all_extracts <- regmatches(txt, gmatch)
   ooxml_str <- lapply(all_extracts, chunk_to_ooxml, fname = fname, type = type)
   ooxml_str
 }
 
-#' @import stringr
 chunk_macro <- function(txt, type = "docx"){
   for( i in names(LIST_CHUNK_MACRO) ){
     regex <- chunk_pattern(i)
@@ -59,7 +61,7 @@ chunk_macro <- function(txt, type = "docx"){
         chunks <- c(txtline, replacts)
         chunks <- chunks[order(c(seq_along(txtline) * 2 - 1, seq_along(replacts) * 2))]
         do.call(paste0, as.list(chunks))
-      }, str_split(txt[macro_], pattern = regex), ooxml_str, SIMPLIFY = FALSE)
+      }, strsplit(txt[macro_], split = regex), ooxml_str, SIMPLIFY = FALSE)
       txt[macro_] <- as.character(unlist(new_txt))
     }
   }

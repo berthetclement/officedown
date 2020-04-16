@@ -82,9 +82,9 @@ output:
 }
 
 \examples{
-skeleton <- system.file(package = "officedown",
-  "rmarkdown/templates/word/skeleton/skeleton.Rmd")
-file.copy(skeleton, to = "officedown.Rmd")
 library(rmarkdown)
-render("officedown.Rmd", output_file = "officedown.docx")
+skeleton <- system.file(package = "officedown",
+                        "example/example.Rmd")
+docx_file_1 <- tempfile(fileext = ".docx")
+render(skeleton, output_file = docx_file_1)
 }
