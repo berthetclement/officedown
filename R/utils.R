@@ -36,3 +36,16 @@ htmlEscapeCopy <- local({
 })
 
 
+merge_pPr <- function(new, current, xpath){
+  jc <- xml_child(new, xpath)
+  jc_ref <- xml_child(current, xpath)
+  if(inherits(jc, "xml_missing")) return(FALSE)
+  if( !inherits(jc_ref, "xml_missing") )
+    xml_replace(jc_ref, jc)
+  else xml_add_child(current, jc)
+
+  TRUE
+
+}
+
+

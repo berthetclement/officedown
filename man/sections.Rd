@@ -10,9 +10,9 @@
 \usage{
 block_section_continuous()
 
-block_section_landscape(w = 21/2.54, h = 29.7/2.54)
+block_section_landscape(w = 21/2.54, h = 29.7/2.54, break_page = "oddPage")
 
-block_section_portrait(w = 21/2.54, h = 29.7/2.54)
+block_section_portrait(w = 21/2.54, h = 29.7/2.54, break_page = "oddPage")
 
 block_section_columns(widths = c(2.5, 2.5), space = 0.25, sep = FALSE)
 }
@@ -20,6 +20,11 @@ block_section_columns(widths = c(2.5, 2.5), space = 0.25, sep = FALSE)
 \item{w, h}{width and height in inches of the section page. This will
 be ignored if the default section (of the \code{reference_docx} file)
 already has width and height.}
+
+\item{break_page}{break page type. It defines how the contents of the section will be
+placed relative to the previous section. Available types are "evenPage"
+(begins on the next, "nextPage" (begins on the following page), "oddPage"
+(begins on the next odd-numbered page).}
 
 \item{widths}{columns widths in inches. If 3 values, 3 columns
 will be produced.}

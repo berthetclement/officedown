@@ -21,6 +21,7 @@ knit_print.dml <- function(x, ...) {
       opts_knit$get("rmarkdown.pandoc.to") != "pptx") {
     stop("DrawingML currently only supported for pptx output")
   }
+
   if(is.null( layout <- knitr::opts_current$get("layout") )){
     layout <- officer::ph_location_type()
   }
@@ -70,8 +71,7 @@ knit_print.dml <- function(x, ...) {
 #' @noRd
 #' @importFrom officer fortify_location
 get_content_layout_uncached <- function(layout) {
-  ref_pptx <- read_pptx(get_reference_pptx())
-  fortify_location(layout, ref_pptx)
+  fortify_location(layout, get_reference_pptx())
 }
 
 #' @importFrom memoise memoise

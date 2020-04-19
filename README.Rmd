@@ -64,25 +64,6 @@ Tags have been made to make less verbose and easier use.
 Some are expected parameters (i.e. `CHUNK_TEXT`, `BLOCK_MULTICOL_STOP`). These parameters 
 need to be defined as inline yaml.
 
-### Chunks
-
-Chunks are to be used in a paragraph in an R markdown document.
-
-| Output type | Tag name          | R function             | Has args |
-|-------------|-------------------|------------------------|----------|
-| chunk       | CHUNK_PAGEBREAK   | chunk_page_break       | no       |
-| chunk       | CHUNK_TEXT        | chunk_styled_text      | yes      |
-| chunk       | CHUNK_TEXT_STYLE  | chunk_text_stylenamed  | yes      |
-| chunk       | CHUNK_COLUMNBREAK | chunk_column_break     | no       |
-| chunk       |                   | add_paragraph_settings | yes      |
-
-<pre>This text will be followed by a break page.`r taghl("<!---CHUNK_PAGEBREAK--->")`
-
-<code>&#96;`r taghl("r add_paragraph_settings(align='center', paddings = list(t= 120, b= 20))")`&#96;</code>
-This paragraph will be centered and wil have a 120 pts top padding and 20 bottom padding.
-Text can be styles: `r taghl("<!---CHUNK_TEXT{str: 'officedown', color: 'orange'}--->")` is really cool.
-</pre>
-
 
 ### Blocks
 
@@ -145,23 +126,18 @@ Blah blah blah on column 2.
 `r taghl("<!---BLOCK_MULTICOL_STOP{widths: [3,3], space: 0.2, sep: true}--->")`
 </pre>
 
-## Working with officedown
-
-
 
 ## Installation
 
 You can install officedown from github with:
 
-```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("davidgohel/officedown")
+```{r eval = FALSE}
+remotes::install_github("davidgohel/officedown")
 ```
 
 Supported formats require some minimum [pandoc](https://pandoc.org/installing.html) versions: 
 
-|    R Markdown output | pandoc version |                 comment                |
-|---------------------:|:--------------:|:--------------------------------------:|
-|       Microsoft Word |     >= 2.0     | require a recent RStudio (> june 2018) |
-| Microsoft PowerPoint |     >= 2.4     |       require pandoc installation      |
-
+|    R Markdown output | pandoc version |
+|---------------------:|:--------------:|
+|       Microsoft Word |     >= 2.0     |
+| Microsoft PowerPoint |     >= 2.4     |

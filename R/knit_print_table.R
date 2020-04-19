@@ -8,6 +8,26 @@ sanitize_tab.lp <- function(tab.lp){
 }
 
 
+default_style <- function(type, si){
+  si[si$style_type %in% type & si$is_default ,"style_name"]
+}
+style_id <- function(x, type, si){
+  si[
+    si$style_type %in% type &
+      si$style_name %in% x ,
+    "style_id"]
+}
+validate_style <- function(x, type, si){
+  validated_style <- si[si$style_type %in% type & si$style_name %in% x, "style_name"]
+  if(length(validated_style) != 1 ){
+    validated_style <- default_style(type, si)
+    msg <- paste0("could not find ", type, " style ", shQuote(x),
+                  ". Switching to default one named ", shQuote(validated_style), ".")
+    warning(msg, call. = FALSE)
+  }
+  validated_style
+}
+
 #' @importFrom officer styles_info
 opts_current_table <- function(){
   tab.cap.style <- opts_chunk$get("tab.cap.style")
@@ -21,15 +41,11 @@ opts_current_table <- function(){
   si <- styles_info(doc)
 
   if(is.null(tab.cap.style)){
-    tab.cap.style <- si[si$style_type %in% "paragraph" & si$is_default ,"style_name"]
+    tab.cap.style <- default_style("paragraph", si)
   } else {
-    tab.cap.style <- si[si$style_type %in% "paragraph" & si$style_name %in% tab.cap.style, "style_name"]
-    if(length(tab.cap.style) != 1 ){
-      msg <- paste0("could not find paragraph style ", shQuote(tab.cap.style), ". Switching to default one named ")
-      tab.cap.style <- si[si$style_type %in% "paragraph" & si$is_default ,"style_name"]
-      warning(paste0(msg, shQuote(tab.cap.style), "."))
-    }
+    tab.cap.style <- validate_style(x = tab.cap.style, type = "paragraph", si = si)
   }
+  tab.cap.style_id <- style_id(tab.cap.style, type = "paragraph", si)
 
   if(is.null(tab.cap.pre)){
     tab.cap.pre <- "table "
@@ -39,20 +55,10 @@ opts_current_table <- function(){
   }
 
   if(is.null(tab.style)){
-    tab.style <- si[si$style_type %in% "table" & si$is_default ,"style_name"]
+    tab.style <- default_style("table", si)
   } else {
-    tab.style <- si[si$style_type %in% "table" & si$style_name %in% tab.style, "style_name"]
-    if(length(tab.style) != 1 ){
-      msg <- paste0("could not find table style ", shQuote(tab.style), ". Switching to default one named ")
-      tab.style <- si[si$style_type %in% "table" & si$is_default ,"style_name"]
-      warning(paste0(msg, shQuote(tab.style), "."))
-    }
+    tab.style <- validate_style(x = tab.style, type = "table", si = si)
   }
-
-  tab.cap.style_id <- si[
-    si$style_type %in% "paragraph" &
-      si$style_name %in% tab.cap.style ,
-    "style_id"]
 
   list(tab.cap.style = tab.cap.style, tab.cap.style_id = tab.cap.style_id,
        tab.cap.pre = tab.cap.pre, tab.cap.sep = tab.cap.sep,

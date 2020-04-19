@@ -1,11 +1,21 @@
 #' @export
 #' @title Convert to an MS PowerPoint document
 #' @description Format for converting from R Markdown to an MS PowerPoint
-#' document.
+#' document. \code{rpptx_document2} also supports cross reference based on the
+#' syntax of the bookdown package.
 #' @param base_format a scalar character, format to be used as a base document for
 #' officedown. default to [powerpoint_presentation][rmarkdown::powerpoint_presentation] but
 #' can also be powerpoint_presentation2 from bookdown
 #' @param ... arguments used by [powerpoint_presentation][rmarkdown::powerpoint_presentation]
+#' @examples
+#' library(rmarkdown)
+#' skeleton <- system.file(package = "officedown",
+#'   "rmarkdown/templates/powerpoint/skeleton/skeleton.Rmd")
+#' rmd_file <- tempfile(fileext = ".Rmd")
+#' file.copy(skeleton, to = rmd_file)
+#'
+#' pptx_file_1 <- tempfile(fileext = ".pptx")
+#' render(rmd_file, output_file = pptx_file_1)
 rpptx_document <- function(base_format = "rmarkdown::powerpoint_presentation", ...) {
 
   base_format <- get_fun(base_format)
@@ -40,5 +50,23 @@ rpptx_document <- function(base_format = "rmarkdown::powerpoint_presentation", .
 
   output_formats
 }
+
+
+#' @rdname rpptx_document
+#' @importFrom bookdown markdown_document2
+#' @export
+rpptx_document2 <- function(...) {
+  rpptx_document(..., base_format = rpptx_document)
+}
+
+#' @importFrom officer get_reference_value read_pptx
+get_pptx_uncached <- function() {
+  ref_pptx <- read_pptx(get_reference_value(format = "pptx"))
+  ref_pptx
+}
+
+#' @noRd
+#' @importFrom memoise memoise
+get_reference_pptx <- memoise(get_pptx_uncached)
 
 

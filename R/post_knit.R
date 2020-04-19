@@ -31,10 +31,10 @@ post_knit_table_captions <- function(content, tab.cap.pre, tab.cap.sep){
   content
 }
 
-post_knit_references <- function(content, lp){
+post_knit_references <- function(content, lp = ""){
 
-  if(!lp %in% c("tab:", "fig:")){
-    stop("lp must be one of `tab:` or `fig:`.")
+  if(!lp %in% c("tab:", "fig:", "")){
+    stop("lp must be one of `tab:`, `fig:` or empty ``.")
   }
   regexpr_str <- paste0('\\\\@ref\\(', lp, '([-[:alnum:]]+)\\)')
 
@@ -50,3 +50,4 @@ post_knit_references <- function(content, lp){
   regmatches(content,gmatch) <- result
   content
 }
+

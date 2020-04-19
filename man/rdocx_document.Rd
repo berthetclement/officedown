@@ -2,7 +2,8 @@
 % Please edit documentation in R/rdocx_document.R
 \name{rdocx_document}
 \alias{rdocx_document}
-\title{Convert to an MS Word document}
+\alias{rdocx_document2}
+\title{Advanced R Markdown Word Format}
 \usage{
 rdocx_document(
   mapstyles,
@@ -12,6 +13,8 @@ rdocx_document(
   tab.style = "Table",
   ...
 )
+
+rdocx_document2(...)
 }
 \arguments{
 \item{mapstyles}{a named list of style to be replaced in the generated
@@ -60,6 +63,8 @@ Word table styles view.}
 \description{
 Format for converting from R Markdown to an MS Word
 document. The function comes also with improved output options.
+\code{rdocx_document2} also supports cross reference based on the syntax of
+the bookdown package.
 }
 \section{R Markdown yaml}{
 
@@ -87,4 +92,13 @@ skeleton <- system.file(package = "officedown",
                         "example/example.Rmd")
 docx_file_1 <- tempfile(fileext = ".docx")
 render(skeleton, output_file = docx_file_1)
+
+# official template -----
+skeleton <- system.file(package = "officedown",
+  "rmarkdown/templates/word/skeleton/skeleton.Rmd")
+rmd_file <- tempfile(fileext = ".Rmd")
+file.copy(skeleton, to = rmd_file)
+
+docx_file_2 <- tempfile(fileext = ".docx")
+render(rmd_file, output_file = docx_file_2)
 }

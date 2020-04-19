@@ -25,18 +25,16 @@ register_word_fig_caption <- function() {
     if( is.null(fig.id) && !is.null(fig.cap)){
       bc <- block_caption(label = fig.cap, style = fig.cap.style, autonum = autonum)
       str <- to_wml(bc, base_document = get_reference_rdocx())
-      class(str) <- "ooxml"
-      paste("", sprintf("![](%s)", x[1]), format(str), sep = "\n\n")
+      str <- paste("```{=openxml}", str, "```", sep = "\n")
+      paste("", sprintf("![](%s)", x[1]), str, sep = "\n\n")
     } else if( !is.null(fig.id) && !is.null(fig.cap)){
       bc <- block_caption(label = fig.cap, id = fig.id, style = fig.cap.style, autonum = autonum)
       str <- to_wml(bc, base_document = get_reference_rdocx())
-      class(str) <- "ooxml"
-      paste("", sprintf("![](%s)", x[1]), format(str), sep = "\n\n")
+      str <- paste("```{=openxml}", str, "```", sep = "\n")
+      paste("", sprintf("![](%s)", x[1]), str, sep = "\n\n")
     } else {
       paste("", sprintf("![](%s)", x[1]), sep = "\n\n")
     }
-
-
   })
   invisible()
 }

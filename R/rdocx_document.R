@@ -21,9 +21,11 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
 }
 
 #' @export
-#' @title Convert to an MS Word document
+#' @title Advanced R Markdown Word Format
 #' @description Format for converting from R Markdown to an MS Word
 #' document. The function comes also with improved output options.
+#' \code{rdocx_document2} also supports cross reference based on the syntax of
+#' the bookdown package.
 #' @param mapstyles a named list of style to be replaced in the generated
 #' document. `list("Date"="Author")` will result in a document where
 #' all paragraphs styled with stylename "Date" will be styled with
@@ -65,7 +67,17 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
 #'                         "example/example.Rmd")
 #' docx_file_1 <- tempfile(fileext = ".docx")
 #' render(skeleton, output_file = docx_file_1)
+#'
+#' # official template -----
+#' skeleton <- system.file(package = "officedown",
+#'   "rmarkdown/templates/word/skeleton/skeleton.Rmd")
+#' rmd_file <- tempfile(fileext = ".Rmd")
+#' file.copy(skeleton, to = rmd_file)
+#'
+#' docx_file_2 <- tempfile(fileext = ".docx")
+#' render(rmd_file, output_file = docx_file_2)
 #' @importFrom officer change_styles
+#' @importFrom utils modifyList
 #' @section R Markdown yaml:
 #' The following demonstrates how to pass arguments in the R Markdown yaml:
 #'
@@ -123,12 +135,12 @@ rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
       tab.cap.pre = tab_caption$pre, tab.cap.sep = tab_caption$sep)
     content <- post_knit_references(content, lp = "tab:")
     content <- post_knit_references(content, lp = "fig:")
+    content <- post_knit_references(content)
 
     writeLines(content, output_file)
   }
   output_formats$pre_processor = function(metadata, input_file, runtime, knit_meta, files_dir, output_dir){
     md <- readLines(input_file)
-    md <- chunk_macro(md)
     md <- block_macro(md)
     writeLines(md, input_file)
   }
@@ -138,8 +150,6 @@ rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
     x <- process_images(x)
     x <- process_links(x)
     x <- process_embedded_docx(x)
-    x <- process_chunk_style(x)
-    x <- process_sections(x)
     x <- process_par_settings(x)
     x <- change_styles(x, mapstyles = mapstyles)
 
@@ -151,6 +161,12 @@ rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
 
 }
 
+#' @rdname rdocx_document
+#' @importFrom bookdown markdown_document2
+#' @export
+rdocx_document2 <- function(...) {
+  markdown_document2(..., base_format = rdocx_document)
+}
 
 
 
@@ -162,6 +178,3 @@ get_docx_uncached <- function() {
 
 #' @importFrom memoise memoise
 get_reference_rdocx <- memoise(get_docx_uncached)
-
-
-

@@ -45,138 +45,27 @@ process_links <- function( rdoc ){
 
 # ooxml reprocess with rdocx available ----
 
-process_chunk_style <- function( rdoc ){
-  styles_table <- styles_info(rdoc)
-
-  all_nodes <- xml_find_all(rdoc$doc_obj$get(), "//w:rStyle[@w:chunk_style]")
-
-  ref_styles <- unique(xml_attr(all_nodes, "chunk_style"))
-  for(i in seq_along(ref_styles) ){
-
-    style_name <- ref_styles[i]
-    which_match_id <- grepl( style_name, xml_attr(all_nodes, "chunk_style"), fixed = TRUE )
-
-    if( !style_name %in% styles_table$style_name ){
-      warning("could not match any style named ", shQuote(style_name), call. = FALSE)
-      xml_remove(all_nodes[which_match_id])
-      break
-    }
-
-    style_id <- styles_table$style_id[styles_table$style_name %in% style_name]
-
-    xml_attr(all_nodes[which_match_id], "w:val") <- rep(style_id, sum(which_match_id))
-    xml_attr(all_nodes[which_match_id], "w:chunk_style") <- NULL
-
-  }
-  rdoc
-}
-
-
+#' @importFrom officer docx_body_xml
 process_par_settings <- function( rdoc ){
 
-  all_nodes <- xml_find_all(rdoc$doc_obj$get(), "//w:par_settings")
+  all_nodes <- xml_find_all(docx_body_xml(rdoc), "//w:p/w:pPr[position()>1]")
   for(node_id in seq_along(all_nodes) ){
-    par <- xml_parent(all_nodes[[node_id]])
+    pr <- all_nodes[[node_id]]
+    par <- xml_parent(pr)
+    pr1 <- xml_child(par, 1)
+    if( xml_name(pr1) %in% "pPr" ){
 
-    jc <- xml_child(all_nodes[[node_id]], "w:jc")
-    jc_ref <- xml_child(par, "w:jc")
-    if( !inherits(jc, "xml_missing") ){
-      if( !inherits(jc_ref, "xml_missing") )
-        jc_ref <- xml_replace(jc_ref, jc)
-      else xml_add_child(xml_child(par, "w:pPr"), jc)
+      merge_pPr(pr, pr1, "w:jc")
+      merge_pPr(pr, pr1, "w:spacing")
+      merge_pPr(pr, pr1, "w:ind")
+      merge_pPr(pr, pr1, "w:pBdr")
+      merge_pPr(pr, pr1, "w:shd")
+
+      xml_remove(pr)
+    } else {
+      xml_add_child(par, pr, .where = 1)
     }
 
-
-    spacing <- xml_child(all_nodes[[node_id]], "w:spacing")
-    if( !inherits(spacing, "xml_missing") ){
-      spacing_ref <- xml_child(par, "w:pPr/w:spacing")
-      if( !inherits(spacing_ref, "xml_missing") )
-        spacing_ref <- xml_replace(spacing_ref, spacing)
-      else xml_add_child(xml_child(par, "w:pPr"), spacing)
-    }
-
-    indent <- xml_child(all_nodes[[node_id]], "w:ind")
-    if( !inherits(indent, "xml_missing") ){
-      indent_ref <- xml_child(par, "w:pPr/w:ind")
-      if( !inherits(indent_ref, "xml_missing") )
-        indent_ref <- xml_replace(indent_ref, indent)
-      else xml_add_child(xml_child(par, "w:pPr"), indent)
-    }
-
-    bb <- xml_child(all_nodes[[node_id]], "w:pBdr")
-    if( !inherits(bb, "xml_missing") ){
-      bb_ref <- xml_child(par, "w:pPr/w:pBdr")
-      if( !inherits(bb_ref, "xml_missing") )
-        bb_ref <- xml_replace(bb_ref, bb)
-      else xml_add_child(xml_child(par, "w:pPr"), bb)
-    }
-
-    shd <- xml_child(all_nodes[[node_id]], "w:shd")
-    if( !inherits(shd, "xml_missing") ){
-      shd_ref <- xml_child(par, "w:pPr/w:shd")
-      if( !inherits(shd_ref, "xml_missing") )
-        shd_ref <- xml_replace(shd_ref, shd)
-      else xml_add_child(xml_child(par, "w:pPr"), shd)
-    }
-
-    xml_remove(all_nodes[[node_id]])
-  }
-  rdoc
-}
-
-process_sections <- function( rdoc ){
-
-  all_nodes <- xml_find_all(rdoc$doc_obj$get(), "//w:sectPr[w:officedown]")
-  main_sect <- xml_find_first(rdoc$doc_obj$get(), "w:body/w:sectPr")
-
-  for(node_id in seq_along(all_nodes) ){
-    current_node <- as_xml_document(all_nodes[[node_id]])
-    new_node <- as_xml_document(main_sect)
-
-    # correct type ---
-    type <- xml_child(current_node, "w:type")
-    type_ref <- xml_child(new_node, "w:type")
-    if( !inherits(type, "xml_missing") ){
-      if( !inherits(type_ref, "xml_missing") )
-        type_ref <- xml_replace(type_ref, type)
-      else xml_add_child(new_node, type)
-    }
-
-    # correct cols ---
-    cols <- xml_child(current_node, "w:cols")
-    cols_ref <- xml_child(new_node, "w:cols")
-    if( !inherits(cols, "xml_missing") ){
-      if( !inherits(cols_ref, "xml_missing") )
-        cols_ref <- xml_replace(cols_ref, cols)
-      else xml_add_child(new_node, cols)
-    }
-
-    # correct pgSz ---
-    pgSz <- xml_child(current_node, "w:pgSz")
-    pgSz_ref <- xml_child(new_node, "w:pgSz")
-    if( !inherits(pgSz, "xml_missing") ){
-
-      if( !inherits(pgSz_ref, "xml_missing") ){
-        xml_attr(pgSz_ref, "w:orient") <- xml_attr(pgSz, "orient")
-
-        wref <- as.integer( xml_attr(pgSz_ref, "w") )
-        href <- as.integer( xml_attr(pgSz_ref, "h") )
-
-        if( xml_attr(pgSz, "orient") %in% "portrait" ){
-          h <- ifelse( wref < href, href, wref )
-          w <- ifelse( wref < href, wref, href )
-        } else if( xml_attr(pgSz, "orient") %in% "landscape" ){
-          w <- ifelse( wref < href, href, wref )
-          h <- ifelse( wref < href, wref, href )
-        }
-        xml_attr(pgSz_ref, "w:w") <- w
-        xml_attr(pgSz_ref, "w:h") <- h
-      } else {
-        xml_add_child(new_node, pgSz)
-      }
-    }
-
-    node <- xml_replace(all_nodes[[node_id]], new_node)
   }
   rdoc
 }

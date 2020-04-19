@@ -13,35 +13,35 @@ check_all <- function(){
   invisible()
 }
 
-#' @export
-format.ooxml <- function(x, type ="docx", ...){
-
-  check_all()
-  paste("```{=openxml}", as.character(x), "```", sep = "\n")
-
-}
 
 #' @export
-format.ooxml_chunk <- function(x, type ="docx", ...){
-
-  check_all()
-  paste("`", as.character(x), "`{=openxml}", sep = "")
-
-}
-
-#' @export
-knit_print.ooxml_chunk <- function(x, ...){
-
+#' @importFrom officer to_wml
+knit_print.ooxml_str_chunk <- function(x, ...){
   knit_print( asis_output(
-    format(x)
+    paste0("`", x, "`{=openxml}")
   ) )
 }
 
 #' @export
-knit_print.ooxml <- function(x, ...){
-
+#' @importFrom officer to_wml
+knit_print.run <- function(x, ...){
   knit_print( asis_output(
-    format(x)
+    paste("`", to_wml(x), "`{=openxml}", sep = "")
+  ) )
+}
+
+#' @export
+knit_print.fp_par <- function(x, ...){
+  knit_print( asis_output(
+    paste("`", to_wml(x), "`{=openxml}", sep = "")
+  ) )
+}
+
+#' @export
+knit_print.block <- function(x, ...){
+  browser()
+  knit_print( asis_output(
+    paste("```{=openxml}", to_wml(x), "```", sep = "\n")
   ) )
 }
 
