@@ -93,13 +93,32 @@ wml_table_caption <- function(all_properties){
 #' @importFrom officer block_table
 #' @importFrom knitr knit_print asis_output opts_current
 knit_print.data.frame <- function(x, ...) {
-  tab_props <- opts_current_table()
-  bt <- block_table(x, style = tab_props$tab.style)
-  cap_str <- wml_table_caption(tab_props)
-  res <- paste("```{=openxml}", cap_str,
-               to_wml(bt, base_document = get_reference_rdocx()),
-               "```\n\n",
-               sep = "\n")
-  asis_output(res)
+
+  if( grepl( "docx", knitr::opts_knit$get("rmarkdown.pandoc.to") ) ){
+    tab_props <- opts_current_table()
+    bt <- block_table(x, style = tab_props$tab.style)
+    cap_str <- wml_table_caption(tab_props)
+    res <- paste("```{=openxml}", cap_str,
+                 to_wml(bt, base_document = get_reference_rdocx()),
+                 "```\n\n",
+                 sep = "\n")
+    asis_output(res)
+  } else {
+    if(is.null( layout <- knitr::opts_current$get("layout") )){
+      layout <- officer::ph_location_type()
+    }
+    location <- get_content_layout(layout)
+
+    tab_props <- opts_current_table()
+    bt <- block_table(x)
+    res <- paste("```{=openxml}",
+                 officer::to_pml(bt, left = location$left, top = location$top,
+                                 width = location$width, height = location$height,
+                                 label = location$ph_label, ph = location$ph,
+                                 rot = location$rotation, bg = location$bg),
+                 "```\n\n",
+                 sep = "\n")
+    asis_output(res)
+  }
 }
 
