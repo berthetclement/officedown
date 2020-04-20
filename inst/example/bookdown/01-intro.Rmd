@@ -7,6 +7,10 @@ We will test the tables in the Chapter \@ref(tables).
 
 We will test the sections in the Chapter \@ref(sections).
 
+Figures and tables can have auto-numbered captions that can also be 
+cross referenced as \@ref(fig:barplot) and \@ref(tab:mtcars)!
+
+
 \newpage
 
 

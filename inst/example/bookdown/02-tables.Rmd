@@ -2,7 +2,7 @@
 
 This is famous `mtcars` dataset:
 
-```{r tab.cap='mtcars'}
+```{r tab.cap='mtcars', tab.id='mtcars'}
 mtcars
 ```
 

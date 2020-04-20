@@ -1,0 +1,7 @@
+# Graphics {#graphics}
+
+
+```{r fig.cap="A barplot", fig.id = "barplot", fig.cap.style="Captioned Figure"}
+barplot(1:6, col = 6:1)
+```
+
