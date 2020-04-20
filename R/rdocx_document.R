@@ -198,6 +198,10 @@ rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
          fig.lp = "fig:"
          )
     )
+  if(is.null(output_formats$knitr$knit_hooks)){
+    output_formats$knitr$knit_hooks <- list()
+  }
+  output_formats$knitr$knit_hooks$plot <- plot_word_fig_caption
 
   if( missing(mapstyles) )
     mapstyles <- list()
@@ -228,7 +232,7 @@ rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
     x <- process_par_settings(x)
     x <- process_list_settings(x, ul_style = ul.style, ol_style = ol.style)
     x <- change_styles(x, mapstyles = mapstyles)
-
+    forget(get_reference_rdocx)
     print(x, target = output_file)
     output_file
   }
@@ -252,5 +256,5 @@ get_docx_uncached <- function() {
   ref_docx
 }
 
-#' @importFrom memoise memoise
+#' @importFrom memoise memoise forget
 get_reference_rdocx <- memoise(get_docx_uncached)
