@@ -11,7 +11,7 @@
 #' @importFrom rvg dml dml_pptx
 #' @importFrom grDevices dev.off
 #' @importFrom rlang eval_tidy
-#' @export
+#' @noRd
 knit_print.dml <- function(x, ...) {
   if (pandoc_version() < 2.4) {
     stop("pandoc version >= 2.4 required for DrawingML output in pptx")
