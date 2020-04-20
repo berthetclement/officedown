@@ -21,6 +21,7 @@ Imports: knitr,
  xml2, rlang, uuid,
  grDevices, yaml, utils, memoise, 
  rvg (>= 0.2.2)
+Suggests: ggplot2, flextable
 RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 Remotes: davidgohel/officer
