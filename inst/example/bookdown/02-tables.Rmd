@@ -1,0 +1,8 @@
+# Tables {#tables}
+
+This is famous `mtcars` dataset:
+
+```{r tab.cap='mtcars'}
+mtcars
+```
+

@@ -1,0 +1,121 @@
+# Section {#sections}
+
+## A two columns section
+
+<!---BLOCK_MULTICOL_START--->
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat.
+Maecenas facilisis dapibus egestas. Curabitur dignissim pharetra pulvinar. Nunc
+bibendum elit sed cursus congue.
+
+`r run_columnbreak()`Curabitur ligula quam, iaculis faucibus orci quis,
+vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar, laoreet tellus
+sed, sollicitudin tortor. Donec consequat congue erat in iaculis. Curabitur
+luctus tellus ut turpis iaculis, nec laoreet ligula scelerisque.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat.
+Maecenas facilisis dapibus egestas. Curabitur dignissim pharetra pulvinar. Nunc
+bibendum elit sed cursus congue. Curabitur ligula quam, iaculis faucibus orci
+quis, vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar, laoreet
+tellus sed, sollicitudin tortor. Donec consequat congue erat in iaculis.
+Curabitur luctus tellus ut turpis iaculis, nec laoreet ligula scelerisque.
+
+<!---BLOCK_MULTICOL_STOP{widths: [3,3], space: 0.2, sep: true}--->
+
+## End of two columns section
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat.
+Maecenas facilisis dapibus egestas. Curabitur dignissim pharetra pulvinar. Nunc
+bibendum elit sed cursus congue. Curabitur ligula quam, iaculis faucibus orci
+quis, vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar, laoreet
+tellus sed, sollicitudin tortor. Donec consequat congue erat in iaculis.
+Curabitur luctus tellus ut turpis iaculis, nec laoreet ligula scelerisque.
+
+<!---BLOCK_LANDSCAPE_START--->
+
+## Landscape section
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat. 
+
+```{r, echo=FALSE}
+barplot(1:5, col=1:5)
+```
+
+<!---BLOCK_LANDSCAPE_STOP--->
+
+## Normal section
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat.
+Maecenas facilisis dapibus egestas. Curabitur dignissim pharetra pulvinar. Nunc
+bibendum elit sed cursus congue. Curabitur ligula quam, iaculis faucibus orci
+quis, vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar, laoreet
+tellus sed, sollicitudin tortor. Donec consequat congue erat in iaculis.
+Curabitur luctus tellus ut turpis iaculis, nec laoreet ligula scelerisque.
+
+```{r echo=FALSE}
+ps <- prop_section(
+  type = "continuous"
+)
+block_section(ps)
+```
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat.
+
+```{r}
+flextable(mtcars) %>% 
+  fontsize(size = 15, part = "all") %>% 
+  autofit()
+```
+
+
+Maecenas facilisis dapibus egestas. Curabitur dignissim pharetra pulvinar. Nunc
+bibendum elit sed cursus congue. Curabitur ligula quam, iaculis faucibus orci
+quis, vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar, laoreet
+tellus sed, sollicitudin tortor. Donec consequat congue erat in iaculis.
+Curabitur luctus tellus ut turpis iaculis, nec laoreet ligula scelerisque.
+
+```{r echo=FALSE}
+ps <- prop_section(
+  page_size = page_size(width = 10, height = 10),
+  page_margins = page_mar(bottom = .3, top = .3, right = .2, left = .2, gutter = .1),
+  type = "oddPage"
+)
+block_section(ps)
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat.
+Maecenas facilisis dapibus egestas. Curabitur dignissim pharetra pulvinar. Nunc
+bibendum elit sed cursus congue. Curabitur ligula quam, iaculis faucibus orci
+quis, vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar, laoreet
+tellus sed, sollicitudin tortor. Donec consequat congue erat in iaculis.
+Curabitur luctus tellus ut turpis iaculis, nec laoreet ligula scelerisque.
+
+

@@ -11,6 +11,8 @@ rdocx_document(
   tab_caption = list(),
   plot_caption = list(),
   tab.style = "Table",
+  ol.style = NULL,
+  ul.style = NULL,
   ...
 )
 
@@ -54,9 +56,62 @@ Default values are \code{list(style = "Figure Caption", pre = "Figure ", sep = "
 Missing items will be replace by default values, e.g. \code{list(pre="fig.")}
 will produce "fig. 2: ".}
 
-\item{tab.style}{default table style. This is the name of the Word style to
-use for tables. It can be read with \code{officer::styles_info()} or within
-Word table styles view.}
+\item{tab.style}{default table style name to be used.
+
+Pandoc does not allow usage of Word table style. This option
+allows you to define which Word table style is the default.
+These table styles must be present in the \code{reference_docx} document.
+It can be read with \code{officer::styles_info()} or within Word table styles view.
+
+To create a table style in your \code{reference_docx} corresponding to your needs,
+edit the document with MS Word and add a new style of type "table" then configure
+it. The style name must be used as the value of the "tab.style" argument.
+
+\if{html}{
+
+You should see a window that looks like the one below:
+
+\figure{new_style_table.png}{options: width=400px}
+
+In the Define New Table Style window, start give your new style a name.
+There are a many formatting options available in this window.
+For example, you can change the font and font style, change the border
+and cell colors, and change the text alignment.
+
+}
+
+The package is only using these styles and is not able to create them with
+R code.}
+
+\item{ol.style, ul.style}{List style names to be used to replace the style of ordered
+and unordered lists created by pandoc. It can be read with \code{officer::styles_info()}.
+
+Pandoc does not allow easy customization of ordered or unordered lists. This option
+allows you to apply a list style for ordered lists and a list style for unordered
+lists. These list styles must be present in the \code{reference_docx} document.
+
+To create a list style in your \code{reference_docx} corresponding to your needs,
+edit the document with MS Word and add a new style of type "list" then configure
+it. The style name must be used as the value of the "ol.style" argument if you
+configure an ordered list (i.e. with numbers corresponding to each level) or
+as the value of the "ul.style" argument if you configure an unordered list
+(i.e. with bullets corresponding to each level).
+
+\if{html}{
+
+You should see a window that looks like the one below:
+
+\figure{new_style_ol.png}{options: width=400px}
+
+In the Define New List Style window, start give your new style a name.
+There are a many formatting options available in this window. You can
+change the font, define the character formatting and choose the
+type (number or bullet).
+
+}
+
+The package is only using these styles and is not able to create them with
+R code.}
 
 \item{...}{arguments used by \link[rmarkdown:word_document]{word_document}}
 }
@@ -81,7 +136,9 @@ output:
     style: "Captioned Figure"
     pre: "Figure "
     sep: ": "
-  tab.style: "Light List Accent 2"
+  tab.style: "Table"
+  ol.style: "Default ol"
+  ul.style: "Default ul"
 ---
 }
 }
@@ -94,6 +151,7 @@ docx_file_1 <- tempfile(fileext = ".docx")
 render(skeleton, output_file = docx_file_1)
 
 # official template -----
+
 skeleton <- system.file(package = "officedown",
   "rmarkdown/templates/word/skeleton/skeleton.Rmd")
 rmd_file <- tempfile(fileext = ".Rmd")
@@ -101,4 +159,20 @@ file.copy(skeleton, to = rmd_file)
 
 docx_file_2 <- tempfile(fileext = ".docx")
 render(rmd_file, output_file = docx_file_2)
+
+# bookdown example -----
+
+bookdown_loc <- system.file(package = "officedown",
+  "example/bookdown")
+new_dir <- tempdir()
+new_bookdown_loc <- file.path(new_dir, "bookdown")
+file.copy(from = bookdown_loc, to = new_dir,
+  overwrite = TRUE, recursive = TRUE)
+
+render_site(input = new_bookdown_loc, encoding = 'UTF-8')
+docx_file <- file.path(new_bookdown_loc, "_book", "bookdown.docx")
+
+if(file.exists(docx_file))
+  message("file ", docx_file, " has been written.")
+
 }
