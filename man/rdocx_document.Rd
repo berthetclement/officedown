@@ -165,14 +165,15 @@ render(rmd_file, output_file = docx_file_2)
 bookdown_loc <- system.file(package = "officedown",
   "example/bookdown")
 new_dir <- tempdir()
-new_bookdown_loc <- file.path(new_dir, "bookdown")
-file.copy(from = bookdown_loc, to = new_dir,
+file.copy(from = bookdown_loc, to = getwd(),
   overwrite = TRUE, recursive = TRUE)
 
-render_site(input = new_bookdown_loc, encoding = 'UTF-8')
-docx_file <- file.path(new_bookdown_loc, "_book", "bookdown.docx")
+render_site(input = "bookdown", encoding = 'UTF-8')
+docx_file <- file.path("bookdown", "_book", "bookdown.docx")
 
 if(file.exists(docx_file))
   message("file ", docx_file, " has been written.")
+
+unlink("bookdown", force = TRUE, recursive = TRUE)
 
 }
