@@ -13,7 +13,6 @@ description: "This is a minimal example of using the officedown package to write
 library(knitr)
 library(officedown)
 library(officer)
-library(flextable)
 library(magrittr)
 opts_chunk$set(echo = TRUE)
 fp <- fp_par(text.align = "center", padding = 20, border.bottom = fp_border())

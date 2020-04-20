@@ -87,9 +87,7 @@ iaculis dui. Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
 at euismod massa magna at magna. Sed facilisis dapibus diam nec volutpat.
 
 ```{r}
-flextable(mtcars) %>% 
-  fontsize(size = 15, part = "all") %>% 
-  autofit()
+mtcars
 ```
 
 
