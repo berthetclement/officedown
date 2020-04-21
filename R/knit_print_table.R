@@ -28,6 +28,12 @@ validate_style <- function(x, type, si){
   validated_style
 }
 
+get_table_design_opt <- function(x, default = FALSE){
+  x <- opts_current$get(x)
+  if(is.null(x)) x <- default
+  x
+}
+
 #' @importFrom officer styles_info
 opts_current_table <- function(){
   tab.cap.style <- opts_chunk$get("tab.cap.style")
@@ -60,10 +66,14 @@ opts_current_table <- function(){
     tab.style <- validate_style(x = tab.style, type = "table", si = si)
   }
 
+
+
+
   list(tab.cap.style = tab.cap.style, tab.cap.style_id = tab.cap.style_id,
        tab.cap.pre = tab.cap.pre, tab.cap.sep = tab.cap.sep,
        tab.id = tab.id, tab.cap = tab.cap,
-       tab.style = tab.style)
+       tab.style = tab.style
+       )
 
 }
 
@@ -96,7 +106,15 @@ knit_print.data.frame <- function(x, ...) {
 
   if( grepl( "docx", knitr::opts_knit$get("rmarkdown.pandoc.to") ) ){
     tab_props <- opts_current_table()
-    bt <- block_table(x, style = tab_props$tab.style)
+    bt <- block_table(x, style = tab_props$tab.style,
+                      header = get_table_design_opt("header", default = TRUE),
+                      first_row = get_table_design_opt("first_row", default = TRUE),
+                      first_column = get_table_design_opt("first_column"),
+                      last_row = get_table_design_opt("last_row"),
+                      last_column = get_table_design_opt("last_column"),
+                      no_hband = get_table_design_opt("no_hband"),
+                      no_vband = get_table_design_opt("no_vband")
+                      )
     cap_str <- wml_table_caption(tab_props)
     res <- paste("```{=openxml}", cap_str,
                  to_wml(bt, base_document = get_reference_rdocx()),

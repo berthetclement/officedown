@@ -6,3 +6,10 @@ This is famous `mtcars` dataset:
 mtcars
 ```
 
+
+This is famous `iris` dataset:
+
+```{r tab.cap='iris', tab.id='iris', no_hband = TRUE}
+iris
+```
+
