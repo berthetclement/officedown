@@ -20,14 +20,18 @@ library(officedown)
 
 ## Introduction 
 
-Nous allons voir ici comment il est possible de définir un ***nouveau style de liste*** avec le logiciel **word** (https://www.office.com/).  
+Nous allons voir comment définir un nouveau ***style de liste*** dans un document Microsoft Word et comment bénéficier des mises en formes avec R Markdown.  
   
   
 ![](screenshot/def_style_list.png){width=80%}
   
+Il faudra utiliser un ***document Microsoft Word “template”*** (ex : “template.docx”) pour creer un **nouveau style de liste**.
+Ce template vous servira de document de reference pour la personnalisation de votre **style de liste**.  
   
   
-L'objectif est d'utiliser un "template" (ex : "template.docx") pour creer un ***nouveau style de liste***, le sauvegarder dans le "template" et l'appliquer sur vos futurs documents word en sortie.  
+Plus tard, le template sera renseigné comme valeur du paramètre `reference_docx`. Ces parametres seront utilises pour vos futurs documents Word produits à partir de R Markdown.
+
+## Usage
 
 1. Comment creer un style de liste ? 
 
@@ -38,11 +42,12 @@ https://www.howtogeek.com/355561/how-to-create-and-work-with-multilevel-lists-in
 
 2. Utilisation de `reference_docx` 
 
-Le package `officedown` https://github.com/davidgohel/officedown vous permet de creer un document word a partir de `Rmarkdown`.  
+L'option `reference_docx` permet de faire appel à votre template (modele de document) contenant vos personnalisations.  
 
-![](screenshot/pimp_my_word.png){width=60%}
+La documentation `Rmarkdown` à ce sujet est disponible via :  
+https://bookdown.org/yihui/rmarkdown/word-document.html  
 
-Une fois le nouveau fichier `.Rmd` cree, il vous faudra preciser l'option `reference_docx` dans `YAML`.  
+Pour activer cette option, il vous faudra preciser l'option `reference_docx` dans `YAML`.  
 
 Par défaut, votre `YAML` est comme ceci :  
 
