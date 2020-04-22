@@ -48,4 +48,37 @@ merge_pPr <- function(new, current, xpath){
 
 }
 
+#' @importFrom uuid UUIDgenerate
+as_bookmark_md <- function(id, str) {
+  new_id <- uuid::UUIDgenerate()
+  bm_start_str <- sprintf("`<w:bookmarkStart w:id=\"%s\" w:name=\"%s\"/>`{=openxml}", new_id, id)
+  bm_start_end <- sprintf("`<w:bookmarkEnd w:id=\"%s\"/>`{=openxml}", new_id)
+  paste0(bm_start_str, str, bm_start_end)
+}
+
+pandoc_wml_caption <- function(cap = NULL, cap.style = NULL, cap.pre = NULL, cap.sep = NULL, id = NULL, seq_id = NULL, ...){
+
+  if( is.null(cap)) return("")
+
+  autonum <- run_autonum(seq_id = seq_id,
+                         pre_label = cap.pre,
+                         post_label = cap.sep)
+  autonum <- paste("`", to_wml(autonum), "`{=openxml}", sep = "")
+  run_str <- paste0(autonum, cap)
+
+  if(!is.null(id)) {
+    run_str <- as_bookmark_md(id, run_str)
+  }
+
+  paste0(if(!is.null(cap.style)) paste0("\n\n::: {custom-style=\"", cap.style, "\"}"),
+         "\n\n",
+         "<caption>",
+         run_str,
+         "</caption>",
+         if(!is.null(cap.style)) paste0("\n:::\n"),
+         "\n\n")
+
+}
+
+
 

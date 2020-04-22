@@ -8,18 +8,34 @@ We will test the tables in the Chapter \@ref(tables).
 We will test the sections in the Chapter \@ref(sections).
 
 Figures and tables can have auto-numbered captions that can also be 
-cross referenced as \@ref(fig:barplot) and \@ref(tab:mtcars)!
+cross referenced: 
+
+* This is a Word reference: \@ref(fig:dotplot), its number is computed by Word 
+and it's linked to the corresponding graphic when clicking on it.
+
+
+* This is a Word reference: \@ref(tab:mtcars), its number is computed by Word 
+and it's linked to the corresponding table when clicking on it.
+
+
+This is famous `iris` dataset:
+
+```{r tab.cap='iris2', tab.id='iris2', no_hband = TRUE}
+head(iris)
+```
+
 
 
 \newpage
 
 
+```{r echo=FALSE}
+ft <- fp_text(shading.color='#EFEFEF', bold = TRUE, color = "red")
+```
 
 
 
-
-
-Amet nunc eros curabitur tellus massa, eros maximus porttitor sociosqu, pellentesque.
+Amet nunc eros `r ftext("curabitur", ft)` tellus massa, eros maximus porttitor sociosqu, pellentesque.
 
 * Erat mauris egestas finibus tincidunt sed in rhoncus a tellus etiam. 
     - A adipiscing per ultricies justo tellus lorem. 

@@ -67,35 +67,12 @@ opts_current_table <- function(){
   }
 
 
-
-
-  list(tab.cap.style = tab.cap.style, tab.cap.style_id = tab.cap.style_id,
-       tab.cap.pre = tab.cap.pre, tab.cap.sep = tab.cap.sep,
-       tab.id = tab.id, tab.cap = tab.cap,
-       tab.style = tab.style
+  list(cap.style = tab.cap.style, cap.style_id = tab.cap.style_id,
+       cap.pre = tab.cap.pre, cap.sep = tab.cap.sep,
+       id = tab.id, cap = tab.cap,
+       style = tab.style, seq_id = "tab"
        )
 
-}
-
-wml_table_caption <- function(all_properties){
-
-  if( is.null(all_properties$tab.cap)) return("")
-
-  par_style <- paste0("<w:pStyle w:val=\"", all_properties$tab.cap.style_id, "\"/>")
-
-  autonum <- run_autonum(seq_id = "tab",
-                         pre_label = all_properties$tab.cap.pre,
-                         post_label = all_properties$tab.cap.sep)
-  autonum <- to_wml(autonum)
-  run_str <- sprintf("<w:r><w:t xml:space=\"preserve\">%s</w:t></w:r>",
-                     htmlEscapeCopy(all_properties$tab.cap))
-  run_str <- paste0(autonum, run_str)
-
-  if(!is.null(all_properties$tab.id)) {
-    run_str <- as_bookmark(all_properties$tab.id, run_str)
-  }
-
-  paste0("<w:p><w:pPr>", par_style, "</w:pPr>", run_str, "</w:p>")
 }
 
 # knit_print.data.frame -----
@@ -106,7 +83,8 @@ knit_print.data.frame <- function(x, ...) {
 
   if( grepl( "docx", knitr::opts_knit$get("rmarkdown.pandoc.to") ) ){
     tab_props <- opts_current_table()
-    bt <- block_table(x, style = tab_props$tab.style,
+
+    bt <- block_table(x, style = tab_props$style,
                       header = get_table_design_opt("header", default = TRUE),
                       first_row = get_table_design_opt("first_row", default = TRUE),
                       first_column = get_table_design_opt("first_column"),
@@ -115,8 +93,9 @@ knit_print.data.frame <- function(x, ...) {
                       no_hband = get_table_design_opt("no_hband"),
                       no_vband = get_table_design_opt("no_vband")
                       )
-    cap_str <- wml_table_caption(tab_props)
-    res <- paste("```{=openxml}", cap_str,
+
+    cap_str <- do.call(pandoc_wml_caption, tab_props)
+    res <- paste(cap_str, "```{=openxml}",
                  to_wml(bt, base_document = get_reference_rdocx()),
                  "```\n\n",
                  sep = "\n")
