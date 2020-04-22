@@ -25,3 +25,4 @@ Suggests: ggplot2, flextable
 RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 Remotes: davidgohel/officer
+VignetteBuilder: knitr
