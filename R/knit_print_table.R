@@ -36,12 +36,14 @@ get_table_design_opt <- function(x, default = FALSE){
 
 #' @importFrom officer styles_info
 opts_current_table <- function(){
-  tab.cap.style <- opts_chunk$get("tab.cap.style")
-  tab.cap.pre <- opts_chunk$get("tab.cap.pre")
-  tab.cap.sep <- opts_chunk$get("tab.cap.sep")
+  tab.cap.style <- get_table_design_opt("tab.cap.style", default = "Normal")
+  tab.cap.pre <- get_table_design_opt("tab.cap.pre", default = "Table ")
+  tab.cap.sep <- get_table_design_opt("tab.cap.sep", default = ":")
   tab.cap <- opts_current$get("tab.cap")
   tab.id <- opts_current$get("tab.id")
   tab.style <- opts_current$get("tab.style")
+  tab.layout <- get_table_design_opt("tab.layout", default = "autofit")
+  tab.width <- get_table_design_opt("tab.width", default = 1)
 
   doc <- get_reference_rdocx()
   si <- styles_info(doc)
@@ -59,6 +61,12 @@ opts_current_table <- function(){
   if(is.null(tab.cap.sep)){
     tab.cap.sep <- ": "
   }
+  if(is.null(tab.layout)){
+    tab.layout <- "autofit"
+  }
+  if(is.null(tab.width)){
+    tab.width <- 1
+  }
 
   if(is.null(tab.style)){
     tab.style <- default_style("table", si)
@@ -70,28 +78,36 @@ opts_current_table <- function(){
   list(cap.style = tab.cap.style, cap.style_id = tab.cap.style_id,
        cap.pre = tab.cap.pre, cap.sep = tab.cap.sep,
        id = tab.id, cap = tab.cap,
-       style = tab.style, seq_id = "tab"
+       style = tab.style, seq_id = "tab",
+       table_layout = table_layout(type = tab.layout),
+       table_width = table_width(width = tab.width, unit = "pct")
        )
 
 }
 
 # knit_print.data.frame -----
 
-#' @importFrom officer block_table
+#' @importFrom officer block_table prop_table table_layout table_width table_colwidths table_conditional_formatting
 #' @importFrom knitr knit_print asis_output opts_current
 knit_print.data.frame <- function(x, ...) {
 
-  if( grepl( "docx", knitr::opts_knit$get("rmarkdown.pandoc.to") ) ){
+  if( grepl( "docx", opts_knit$get("rmarkdown.pandoc.to") ) ){
     tab_props <- opts_current_table()
+    opts_knit$get("rmarkdown.pandoc.to")
+    pt <- prop_table(
+      style = tab_props$style, layout = tab_props$table_layout,
+      width = tab_props$table_width,
+      tcf = table_conditional_formatting(
+        first_row = get_table_design_opt("first_row", default = TRUE),
+        first_column = get_table_design_opt("first_column"),
+        last_row = get_table_design_opt("last_row"),
+        last_column = get_table_design_opt("last_column"),
+        no_hband = get_table_design_opt("no_hband"),
+        no_vband = get_table_design_opt("no_vband")))
 
-    bt <- block_table(x, style = tab_props$style,
+    bt <- block_table(x,
                       header = get_table_design_opt("header", default = TRUE),
-                      first_row = get_table_design_opt("first_row", default = TRUE),
-                      first_column = get_table_design_opt("first_column"),
-                      last_row = get_table_design_opt("last_row"),
-                      last_column = get_table_design_opt("last_column"),
-                      no_hband = get_table_design_opt("no_hband"),
-                      no_vband = get_table_design_opt("no_vband")
+                      properties = pt
                       )
 
     cap_str <- do.call(pandoc_wml_caption, tab_props)

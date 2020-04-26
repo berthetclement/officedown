@@ -100,13 +100,13 @@ head(cars)
 
 ### un graph
 
-```{r fig.cap="A boxplot", fig.id = "boxplot", fig.cap.style="Captioned Figure"}
+```{r fig.cap="A boxplot", fig.id = "boxplot"}
 boxplot(1:8)
 ```
 
 ### un autre graph
 
-```{r fig.cap.style="Captioned Figure"}
+```{r}
 barplot(1:8)
 ```
 

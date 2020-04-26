@@ -6,22 +6,29 @@ output:
   bookdown::markdown_document2:
     base_format: "officedown::rdocx_document"
     reference_docx: template.docx
-    tab_caption: 
-      style: "table title"
-      pre: "Table "
-      sep: ": "
-      lp: "tab:"
-    plot_caption: 
-      style: "graphic title"
-      pre: "Figure "
-      sep: ": "
-      lp: "fig:"
-    tab.style: "Grid Table 4 Accent 2"
+    lists:
+      ol.style: Default ol
+      ul.style: Default ul
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.cap = TRUE)
+library(officer)
 library(officedown)
+library(knitr)
+opts_chunk$set(echo = TRUE, fig.cap = TRUE)
+```
+
+
+## Table list
+
+```{r echo=FALSE}
+block_toc(style = "Table Caption")
+```
+
+## Figure list
+
+```{r echo=FALSE}
+block_toc(style = "Image Caption")
 ```
 
 
@@ -32,19 +39,19 @@ library(officedown)
 ### Table 1
 
 
-```{r tab.cap="caption 1", tab.id="mtcars", tab.style = "table_template"}
+```{r tab.cap="caption 1", tab.id="mtcars"}
 head(mtcars)
 ```
 
 ### Table 2
 
-```{r tab.cap="iris"}
+```{r tab.cap="iris", tab.width=.7}
 head(iris)
 ```
 
 ### Table 3
 
-```{r tab.cap="cars", tab.id="cars"}
+```{r tab.cap="cars", tab.id="cars", tab.width=.3}
 head(cars)
 ```
 
@@ -54,17 +61,41 @@ head(cars)
 
 ### Figure 1
 
-```{r fig.cap="A boxplot", fig.id = "boxplot", fig.cap.style="Captioned Figure"}
+```{r fig.cap="A boxplot", fig.id = "boxplot"}
 boxplot(1:8)
 ```
 
 ### Figure 3
 
-```{r fig.cap.style="Captioned Figure"}
+```{r}
 barplot(1:8)
 ```
 
 ## References
 
 see \@ref(fig:boxplot) and \@ref(tab:mtcars)!
+
+
+* Dummy item
+    * Dummy item
+    * Dummy item
+        * Dummy item
+        * Dummy item
+            * Dummy item
+            * Dummy item
+            * Dummy item
+        * Dummy item
+    * Dummy item
+* Dummy item
+* Dummy item
+
+1. Dummy item
+    1. Dummy item
+        1. Dummy item
+            1. Dummy item
+    1. Dummy item
+        1. Dummy item
+        1. Dummy item
+    1. Dummy item
+1. Dummy item
 

@@ -4,7 +4,7 @@
 gg_available <- require("ggplot2")
 ```
 
-```{r eval=gg_available, fig.cap="$\\sum_{i=1}^n X_i$", fig.id = "dotplot", fig.cap.style="Captioned Figure"}
+```{r eval=gg_available, fig.cap="$\\sum_{i=1}^n X_i$", fig.id = "dotplot"}
 ggplot(mpg, aes(displ, cty, color = trans)) + geom_point() + theme_minimal()
 ```
 

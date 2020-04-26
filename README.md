@@ -62,7 +62,7 @@ It creates an R markdown document, parameter `output` is set to
 
 ``` 
 ---
-date: "2020-04-23"
+date: "2020-04-26"
 author: "David Gohel"
 title: "Document title"
 output: 
@@ -97,7 +97,7 @@ In the knitr chunks settings, specify:
     `fig.cap.style' (or`fig.tab.style’) parameter.
 
 <pre>
-<code>&#96;&#96;&#96;{r fig.cap="A dotplot", fig.id = "dotplot", fig.cap.style="Captioned Figure"}
+<code>&#96;&#96;&#96;{r fig.cap="A dotplot", fig.id = "dotplot", fig.cap.style="Image Caption"}
 ggplot(mpg, aes(displ, cty, color = trans)) + geom_point() 
 &#96;&#96;&#96;</code>
 </pre>
@@ -138,12 +138,13 @@ the R Markdown document.
 
 <pre>
 <code>---
-date: "2020-04-23"
+date: "2020-04-26"
 author: "David Gohel"
 title: "Document title"
 output: 
   officedown::rdocx_document:
-    tab.style: "Your Table Style"
+    tables: 
+      style: "Your Table Style"
 ---
 
 &#96;&#96;&#96;{r include=FALSE}
@@ -178,13 +179,14 @@ each, these styles are declared in the YAML header of the R Markdown
 document.
 
     ---
-    date: "2020-04-23"
+    date: "2020-04-26"
     author: "David Gohel"
     title: "Document title"
     output: 
       officedown::rdocx_document:
-        ol.style: "Default ol"
-        ul.style: "Default ul"
+        lists:
+          ol.style: "Default ol"
+          ul.style: "Default ul"
     ---
 
 ## officer compatibility

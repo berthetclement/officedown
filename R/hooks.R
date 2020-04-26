@@ -13,9 +13,5 @@ plot_word_fig_caption <- function(x, options) {
                                 cap.pre = options$fig.cap.pre, cap.sep = options$fig.cap.sep,
                                 id = options$fig.id, seq_id = "fig")
 
-  # if( !is.null(options$fig.cap)){
-    paste("", sprintf("![](%s)", x[1]), cap_str, sep = "\n\n")
-  # } else {
-  #   paste("", sprintf("![](%s)", x[1]), sep = "\n\n")
-  # }
+  paste("", sprintf("![](%s)", x[1]), cap_str, sep = "\n\n")
 }

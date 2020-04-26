@@ -1,16 +1,6 @@
 bookdown::markdown_document2:
   base_format: officedown::rdocx_document
   reference_docx: template.docx
-  tab_caption:
-    style: "table title"
-    pre: "Table "
-    sep: ": "
-    lp: "tab:"
-  plot_caption:
-    style: "graphic title"
-    pre: "Figure "
-    sep: ": "
-    lp: "fig:"
-  tab.style: "Table"
-  ol.style: "Default ol"
-  ul.style: "Default ul"
+  lists:
+    ol.style: Default ol
+    ul.style: Default ul

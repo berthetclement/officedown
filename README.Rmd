@@ -109,7 +109,7 @@ In the knitr chunks settings, specify:
 the `fig.cap.style' (or `fig.tab.style') parameter.
 
 <pre>
-<code>&#96;&#96;&#96;{r fig.cap="A dotplot", fig.id = "dotplot", fig.cap.style="Captioned Figure"}
+<code>&#96;&#96;&#96;{r fig.cap="A dotplot", fig.id = "dotplot", fig.cap.style="Image Caption"}
 ggplot(mpg, aes(displ, cty, color = trans)) + geom_point() 
 &#96;&#96;&#96;</code>
 </pre>
@@ -161,7 +161,8 @@ author: "David Gohel"
 title: "Document title"
 output: 
   officedown::rdocx_document:
-    tab.style: "Your Table Style"
+    tables: 
+      style: "Your Table Style"
 ---
 
 &#96;&#96;&#96;{r include=FALSE}
@@ -202,8 +203,9 @@ author: "David Gohel"
 title: "Document title"
 output: 
   officedown::rdocx_document:
-    ol.style: "Default ol"
-    ul.style: "Default ul"
+    lists:
+      ol.style: "Default ol"
+      ul.style: "Default ul"
 ---
 
 `````

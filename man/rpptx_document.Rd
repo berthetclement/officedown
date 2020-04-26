@@ -3,7 +3,7 @@
 \name{rpptx_document}
 \alias{rpptx_document}
 \alias{rpptx_document2}
-\title{Convert to an MS PowerPoint document}
+\title{Advanced R Markdown PowerPoint Format}
 \usage{
 rpptx_document(base_format = "rmarkdown::powerpoint_presentation", ...)
 
