@@ -92,15 +92,38 @@ All you have to do is use your custom list styles.
 
 ## Example
 
-1. Open Word document "template.docx" in package `officedown`.
-```{r}
-library(officedown)
-example_docx <- system.file(package="officedown", "example/template.docx")
-example_docx
-```
+* Erat mauris egestas finibus tincidunt sed in rhoncus a tellus etiam. 
+    - A adipiscing per ultricies justo tellus lorem. 
+        - Imperdiet ut dui primis, sed gravida, at sed nulla. 
+        - Sem posuere lacus consequat inceptos dapibus duis malesuada finibus. 
+    - Urna sed dui, ornare, eu turpis mus pellentesque amet amet bibendum. 
+* Himenaeos tincidunt, auctor dapibus scelerisque, montes nunc faucibus 
+sodales malesuada ridiculus sed cubilia ligula.
 
-2. Create and save your new list style in this template
 
+1. Erat mauris egestas finibus tincidunt sed in rhoncus a tellus etiam. 
+    1. A adipiscing per ultricies justo tellus lorem. 
+        1. Imperdiet ut dui primis, sed gravida, at sed nulla. 
+        2. Sem posuere lacus consequat inceptos dapibus duis malesuada finibus. 
+    2. Urna sed dui, ornare, eu turpis mus pellentesque amet amet bibendum. 
+2. Himenaeos tincidunt, auctor dapibus scelerisque, montes nunc faucibus 
+sodales malesuada ridiculus sed cubilia ligula.
+
+
+Lorem dolor interdum orci eros pellentesque semper tristique, sodales, et sed
+ut! Porta mattis natoque et. Ac facilisi ipsum viverra elementum vestibulum
+ligula amet enim magnis luctus ullamcorper. Rhoncus rhoncus elit in at nisl.
+Tincidunt habitant sit.
+
+
+* Aptent conubia quam montes id sagittis.
+    - Mattis nisi nascetur, aliquam duis ex, tristique.
+        - Imperdiet ut dui primis, sed gravida, at sed nulla. 
+        - Donec ligula nulla ac. Nisl ac at accumsan sagittis eros felis lobortis amet 
+        nec phasellus urna bibendum sapien.
+    - Eu dui ac id, dictum proin consectetur convallis.
+* Facilisi eu lectus mauris lorem. Et sed sapien pellentesque sed etiam vehicula. 
+* In porttitor id lorem eu efficitur, nisl dis!
 
 
 
