@@ -116,7 +116,7 @@ knit_print.data.frame <- function(x, ...) {
                  "```\n\n",
                  sep = "\n")
     asis_output(res)
-  } else {
+  } else if( grepl( "pptx", opts_knit$get("rmarkdown.pandoc.to") ) ){
     if(is.null( layout <- knitr::opts_current$get("layout") )){
       layout <- officer::ph_location_type()
     }
@@ -132,6 +132,6 @@ knit_print.data.frame <- function(x, ...) {
                  "```\n\n",
                  sep = "\n")
     asis_output(res)
-  }
+  } else knit_print( asis_output("") )
 }
 
