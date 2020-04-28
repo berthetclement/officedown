@@ -1,7 +1,10 @@
 # Graphics {#graphics}
 
+```{r include=FALSE}
+gg_available <- require("ggplot2")
+```
 
-```{r fig.cap="A barplot", fig.id = "barplot", fig.cap.style="Captioned Figure"}
-barplot(1:6, col = 6:1)
+```{r eval=gg_available, fig.cap="$\\sum_{i=1}^n X_i$", fig.id = "dotplot"}
+ggplot(mpg, aes(displ, cty, color = trans)) + geom_point() + theme_minimal()
 ```
 

@@ -20,6 +20,46 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
   )
 }
 
+# tables_default_values ----
+tables_default_values <- list(
+  style = "Table",
+  layout = "autofit",
+  width = 1,
+  caption = list(
+    style = "Table Caption",
+    pre = "Table ", sep = ": "
+  )
+)
+
+# plots_default_values ----
+plots_default_values <- list(
+  style = "Normal",
+  align = "center",
+  caption = list(
+    style = "Image Caption",
+    pre = "Figure ", sep = ": "
+  )
+)
+
+# lists_default_values ----
+lists_default_values <- list(
+  ol.style = NULL,
+  ul.style = NULL
+)
+
+# memoise reference_docx ----
+
+#' @importFrom officer get_reference_value
+get_docx_uncached <- function() {
+  ref_docx <- read_docx(get_reference_value(format = "docx"))
+  ref_docx
+}
+
+#' @importFrom memoise memoise forget
+get_reference_rdocx <- memoise(get_docx_uncached)
+
+
+# main ----
 #' @export
 #' @title Advanced R Markdown Word Format
 #' @description Format for converting from R Markdown to an MS Word
@@ -33,36 +73,88 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
 #' @param base_format a scalar character, format to be used as a base document for
 #' officedown. default to [word_document][rmarkdown::word_document] but
 #' can also be word_document2 from bookdown
-#' @param tab_caption a list that can contain items `style`, `pre` and `sep`:
+#' @param tables a list that can contain few items to style tables and table captions.
+#' Missing items will be replaced by default values. Possible items are the following:
 #'
-#' * style: the Word style name to use for table captions.
-#' * pre: the prefix for numbering chunk (default to "Table ").
-#' * sep: the suffix for numbering chunk (default to ": ").
+#' * `style`: the Word stylename to use for tables. This is
+#' a __table style__. You can access them in the Word template used. Function
+#' [styles_info(doc, type = "table")][officer::styles_info] can let you read these
+#' styles.
+#' * `layout`: 'autofit' or 'fixed' algorithm. See \code{\link[officer]{table_layout}}.
+#' * `width`: value of the preferred width of the table in percent (base 1).
+#' * `caption`; default values `list(style = "Table Caption", pre = "Table ", sep = ": ")`
+#' are producing a numbering chunk of the form "Table 2: ":
+#'   * `style`: Word stylename to use for table captions.You
+#' can access them in the Word template used. Function
+#' [styles_info(doc, type = "paragraph")][officer::styles_info] can let you read these
+#' styles.
+#'   * `pre`: prefix for numbering chunk (default to "Table ").
+#'   * `sep`: suffix for numbering chunk (default to ": ").
 #'
-#' The default is producing a numbering chunk of the form "Table 2: ".
+#' Default value is `list(style = "Table", layout = "autofit", width = 1,
+#' caption = list(style = "Table Caption", pre = "Table ", sep = ": "))`:
 #'
-#' Default values are `list(style = "Table Caption", pre = "Table ", sep = ": ")`.
+#' ```
+#' style: Table
+#' layout: autofit
+#' width: 1.0
+#' caption:
+#'   style: Table Caption
+#'   pre: 'Table '
+#'   sep: ': '
+#' ```
 #'
-#' Missing items will be replace by default values, e.g. `list(pre="tab.")`
-#' will produce "tab. 2: ".
-#' @param plot_caption a list that can contain items `style`, `pre` and `sep`:
+#' @param plots a list that can contain few items to style figures and figure captions.
+#' Missing items will be replaced by default values. Possible items are the following:
 #'
-#' * style: the Word style name to use for figure captions.
-#' * pre: the prefix for numbering chunk (default to "Figure ").
-#' * sep: the suffix for numbering chunk (default to ": ").
+#' * `style`: the Word stylename to use for plots. This is a __paragraph style__.
+#' You can access them in the Word template used. Function
+#' [styles_info(doc, type = "paragraph")][officer::styles_info] can let you read these
+#' styles.
+#' * `align`: alignment of figures in the output document (possible values are 'left',
+#' 'right' and 'center').
+#' * `caption`; default values `list(style = "Figure Caption", pre = "Figure ", sep = ": ")`
+#' are producing a numbering chunk of the form "Figure 2: ":
+#'   * `style`: Word stylename to use for figure captions.You
+#' can access them in the Word template used. Function
+#' [styles_info(doc, type = "paragraph")][officer::styles_info] can let you read these
+#' styles.
+#'   * `pre`: prefix for numbering chunk (default to "Figure ").
+#'   * `sep`: suffix for numbering chunk (default to ": ").
 #'
-#' The default is producing a numbering chunk of the form "Figure 2: ".
+#' Default value is `list(style = "Normal", align = "center",
+#' caption = list(style = "Image Caption", pre = "Figure ", sep = ": "))`:
 #'
-#' Default values are `list(style = "Figure Caption", pre = "Figure ", sep = ": ")`.
+#' ```
+#' style: Normal
+#' align: center
+#' caption:
+#'   style: Image Caption
+#'   pre: 'Figure '
+#'   sep: ': '
+#' ```
+#' @param lists a list containing two named items `ol.style` and
+#' `ul.style`, values are the stylenames to be used to replace the style of ordered
+#' and unordered lists created by pandoc. If NULL, no replacement is made.
 #'
-#' Missing items will be replace by default values, e.g. `list(pre="fig.")`
-#' will produce "fig. 2: ".
-#' @param tab.style default table style name to be used.
+#' Default value is `list(ol.style = NULL, ul.style = NULL)`:
+#'
+#' ```
+#' ol.style: null
+#' ul.style: null
+#' ```
+#' @param ... arguments used by [word_document][rmarkdown::word_document]
+#'
+#'
+#'
+#'
+#' @section table style:
 #'
 #' Pandoc does not allow usage of Word table style. This option
 #' allows you to define which Word table style is the default.
 #' These table styles must be present in the `reference_docx` document.
-#' It can be read with `officer::styles_info()` or within Word table styles view.
+#' It can be read with [styles_info(doc, type = "table")][officer::styles_info]
+#' or within Word table styles view.
 #'
 #' To create a table style in your `reference_docx` corresponding to your needs,
 #' edit the document with MS Word and add a new style of type "table" then configure
@@ -83,9 +175,7 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
 #'
 #' The package is only using these styles and is not able to create them with
 #' R code.
-#' @param ol.style,ul.style List style names to be used to replace the style of ordered
-#' and unordered lists created by pandoc. It can be read with `officer::styles_info()`.
-#'
+#' @section lists:
 #' Pandoc does not allow easy customization of ordered or unordered lists. This option
 #' allows you to apply a list style for ordered lists and a list style for unordered
 #' lists. These list styles must be present in the `reference_docx` document.
@@ -112,7 +202,6 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
 #'
 #' The package is only using these styles and is not able to create them with
 #' R code.
-#' @param ... arguments used by [word_document][rmarkdown::word_document]
 #' @examples
 #' library(rmarkdown)
 #' skeleton <- system.file(package = "officedown",
@@ -153,48 +242,55 @@ file_with_meta_ext <- function(file, meta_ext, ext = tools::file_ext(file)) {
 #'
 #' ```
 #' ---
-#' title: "Word document"
 #' output:
-#'   bookdown::markdown_document2:
-#'   base_format: officedown::rdocx_document
-#'   tab_caption:
-#'     style: "Table Caption"
-#'     pre: "Table "
-#'     sep: ": "
-#'   plot_caption:
-#'     style: "Captioned Figure"
-#'     pre: "Figure "
-#'     sep: ": "
-#'   tab.style: "Table"
-#'   ol.style: "Default ol"
-#'   ul.style: "Default ul"
+#'   officedown::rdocx_document:
+#'     reference_docx: pandoc_template.docx
+#'     tables:
+#'       style: Table
+#'       layout: autofit
+#'       width: 1.0
+#'       caption:
+#'         style: Table Caption
+#'         pre: 'Table '
+#'         sep: ': '
+#'     plots:
+#'       style: Normal
+#'       align: center
+#'       caption:
+#'         style: Image Caption
+#'         pre: 'Figure '
+#'         sep: ': '
+#'     lists:
+#'       ol.style: null
+#'       ul.style: null
 #' ---
 #' ```
-rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
-                           tab_caption = list(), plot_caption = list(),
-                           tab.style = "Table",
-                           ol.style = NULL,
-                           ul.style = NULL,
+rdocx_document <- function(mapstyles,
+                           base_format = "rmarkdown::word_document",
+                           tables = list(), plots = list(), lists = list(),
                            ...) {
 
   base_format_fun <- get_fun(base_format)
   output_formats <- base_format_fun(...)
 
-  plot_caption_ <- list(style = "Table Caption", pre = "Figure ", sep = ": ")
-  plot_caption <- modifyList(plot_caption_, plot_caption)
-  tab_caption_ <- list(style = "Captioned Figure", pre = "Table ", sep = ": ")
-  tab_caption <- modifyList(tab_caption_, tab_caption)
+
+  tables <- modifyList(tables_default_values, tables)
+  plots <- modifyList(plots_default_values, plots)
+  lists <- modifyList(lists_default_values, lists)
 
   output_formats$knitr$opts_chunk <- append(
     output_formats$knitr$opts_chunk,
-    list(tab.cap.style = tab_caption$style,
-         tab.cap.pre = tab_caption$pre,
-         tab.cap.sep = tab_caption$sep,
+    list(tab.cap.style = tables$caption$style,
+         tab.cap.pre = tables$caption$pre,
+         tab.cap.sep = tables$caption$sep,
          tab.lp = "tab:",
-         tab.style = tab.style,
-         fig.cap.style = plot_caption$style,
-         fig.cap.pre = plot_caption$pre,
-         fig.cap.sep = plot_caption$sep,
+         tab.style = tables$style,
+         tab.width = tables$width,
+         fig.cap.style = plots$caption$style,
+         fig.cap.pre = plots$caption$pre,
+         fig.cap.sep = plots$caption$sep,
+         fig.align = plots$align,
+         fig.style = plots$style,
          fig.lp = "fig:"
          )
     )
@@ -211,18 +307,13 @@ rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
     content <- readLines(output_file)
 
     content <- post_knit_table_captions( content,
-      tab.cap.pre = tab_caption$pre, tab.cap.sep = tab_caption$sep)
+      tab.cap.pre = tables$caption$pre, tab.cap.sep = tables$caption$sep)
     content <- post_knit_references(content, lp = "tab:")
     content <- post_knit_references(content, lp = "fig:")
     content <- post_knit_references(content)
     content <- block_macro(content)
     writeLines(content, output_file)
   }
-  # output_formats$pre_processor = function(metadata, input_file, runtime, knit_meta, files_dir, output_dir){
-  #   md <- readLines(input_file)
-  #   md <- block_macro(md)
-  #   writeLines(md, input_file)
-  # }
 
   output_formats$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
     x <- officer::read_docx(output_file)
@@ -230,7 +321,7 @@ rdocx_document <- function(mapstyles, base_format = "rmarkdown::word_document",
     x <- process_links(x)
     x <- process_embedded_docx(x)
     x <- process_par_settings(x)
-    x <- process_list_settings(x, ul_style = ul.style, ol_style = ol.style)
+    x <- process_list_settings(x, ul_style = lists$ul.style, ol_style = lists$ol.style)
     x <- change_styles(x, mapstyles = mapstyles)
     forget(get_reference_rdocx)
     print(x, target = output_file)
@@ -250,11 +341,3 @@ rdocx_document2 <- function(...) {
 
 
 
-#' @importFrom officer get_reference_value
-get_docx_uncached <- function() {
-  ref_docx <- read_docx(get_reference_value(format = "docx"))
-  ref_docx
-}
-
-#' @importFrom memoise memoise forget
-get_reference_rdocx <- memoise(get_docx_uncached)

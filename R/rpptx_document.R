@@ -1,5 +1,5 @@
 #' @export
-#' @title Convert to an MS PowerPoint document
+#' @title Advanced R Markdown PowerPoint Format
 #' @description Format for converting from R Markdown to an MS PowerPoint
 #' document. \code{rpptx_document2} also supports cross reference based on the
 #' syntax of the bookdown package.

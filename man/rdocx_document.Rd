@@ -8,11 +8,9 @@
 rdocx_document(
   mapstyles,
   base_format = "rmarkdown::word_document",
-  tab_caption = list(),
-  plot_caption = list(),
-  tab.style = "Table",
-  ol.style = NULL,
-  ul.style = NULL,
+  tables = list(),
+  plots = list(),
+  lists = list(),
   ...
 )
 
@@ -28,40 +26,89 @@ stylename "Author".}
 officedown. default to \link[rmarkdown:word_document]{word_document} but
 can also be word_document2 from bookdown}
 
-\item{tab_caption}{a list that can contain items \code{style}, \code{pre} and \code{sep}:
+\item{tables}{a list that can contain few items to style tables and table captions.
+Missing items will be replaced by default values. Possible items are the following:
 \itemize{
-\item style: the Word style name to use for table captions.
-\item pre: the prefix for numbering chunk (default to "Table ").
-\item sep: the suffix for numbering chunk (default to ": ").
+\item \code{style}: the Word stylename to use for tables. This is
+a \strong{table style}. You can access them in the Word template used. Function
+\link[officer:styles_info]{styles_info(doc, type = "table")} can let you read these
+styles.
+\item \code{layout}: 'autofit' or 'fixed' algorithm. See \code{\link[officer]{table_layout}}.
+\item \code{width}: value of the preferred width of the table in percent (base 1).
+\item \code{caption}; default values \code{list(style = "Table Caption", pre = "Table ", sep = ": ")}
+are producing a numbering chunk of the form "Table 2: ":
+\itemize{
+\item \code{style}: Word stylename to use for table captions.You
+can access them in the Word template used. Function
+\link[officer:styles_info]{styles_info(doc, type = "paragraph")} can let you read these
+styles.
+\item \code{pre}: prefix for numbering chunk (default to "Table ").
+\item \code{sep}: suffix for numbering chunk (default to ": ").
+}
 }
 
-The default is producing a numbering chunk of the form "Table 2: ".
+Default value is \code{list(style = "Table", layout = "autofit", width = 1, caption = list(style = "Table Caption", pre = "Table ", sep = ": "))}:\preformatted{style: Table
+layout: autofit
+width: 1.0
+caption:
+  style: Table Caption
+  pre: 'Table '
+  sep: ': '
+}}
 
-Default values are \code{list(style = "Table Caption", pre = "Table ", sep = ": ")}.
-
-Missing items will be replace by default values, e.g. \code{list(pre="tab.")}
-will produce "tab. 2: ".}
-
-\item{plot_caption}{a list that can contain items \code{style}, \code{pre} and \code{sep}:
+\item{plots}{a list that can contain few items to style figures and figure captions.
+Missing items will be replaced by default values. Possible items are the following:
 \itemize{
-\item style: the Word style name to use for figure captions.
-\item pre: the prefix for numbering chunk (default to "Figure ").
-\item sep: the suffix for numbering chunk (default to ": ").
+\item \code{style}: the Word stylename to use for plots. This is a \strong{paragraph style}.
+You can access them in the Word template used. Function
+\link[officer:styles_info]{styles_info(doc, type = "paragraph")} can let you read these
+styles.
+\item \code{align}: alignment of figures in the output document (possible values are 'left',
+'right' and 'center').
+\item \code{caption}; default values \code{list(style = "Figure Caption", pre = "Figure ", sep = ": ")}
+are producing a numbering chunk of the form "Figure 2: ":
+\itemize{
+\item \code{style}: Word stylename to use for figure captions.You
+can access them in the Word template used. Function
+\link[officer:styles_info]{styles_info(doc, type = "paragraph")} can let you read these
+styles.
+\item \code{pre}: prefix for numbering chunk (default to "Figure ").
+\item \code{sep}: suffix for numbering chunk (default to ": ").
+}
 }
 
-The default is producing a numbering chunk of the form "Figure 2: ".
+Default value is \code{list(style = "Normal", align = "center", caption = list(style = "Image Caption", pre = "Figure ", sep = ": "))}:\preformatted{style: Normal
+align: center
+caption:
+  style: Image Caption
+  pre: 'Figure '
+  sep: ': '
+}}
 
-Default values are \code{list(style = "Figure Caption", pre = "Figure ", sep = ": ")}.
+\item{lists}{a list containing two named items \code{ol.style} and
+\code{ul.style}, values are the stylenames to be used to replace the style of ordered
+and unordered lists created by pandoc. If NULL, no replacement is made.
 
-Missing items will be replace by default values, e.g. \code{list(pre="fig.")}
-will produce "fig. 2: ".}
+Default value is \code{list(ol.style = NULL, ul.style = NULL)}:\preformatted{ol.style: null
+ul.style: null
+}}
 
-\item{tab.style}{default table style name to be used.
+\item{...}{arguments used by \link[rmarkdown:word_document]{word_document}}
+}
+\description{
+Format for converting from R Markdown to an MS Word
+document. The function comes also with improved output options.
+\code{rdocx_document2} also supports cross reference based on the syntax of
+the bookdown package.
+}
+\section{table style}{
+
 
 Pandoc does not allow usage of Word table style. This option
 allows you to define which Word table style is the default.
 These table styles must be present in the \code{reference_docx} document.
-It can be read with \code{officer::styles_info()} or within Word table styles view.
+It can be read with \link[officer:styles_info]{styles_info(doc, type = "table")}
+or within Word table styles view.
 
 To create a table style in your \code{reference_docx} corresponding to your needs,
 edit the document with MS Word and add a new style of type "table" then configure
@@ -81,10 +128,10 @@ and cell colors, and change the text alignment.
 }
 
 The package is only using these styles and is not able to create them with
-R code.}
+R code.
+}
 
-\item{ol.style, ul.style}{List style names to be used to replace the style of ordered
-and unordered lists created by pandoc. It can be read with \code{officer::styles_info()}.
+\section{lists}{
 
 Pandoc does not allow easy customization of ordered or unordered lists. This option
 allows you to apply a list style for ordered lists and a list style for unordered
@@ -111,34 +158,33 @@ type (number or bullet).
 }
 
 The package is only using these styles and is not able to create them with
-R code.}
+R code.
+}
 
-\item{...}{arguments used by \link[rmarkdown:word_document]{word_document}}
-}
-\description{
-Format for converting from R Markdown to an MS Word
-document. The function comes also with improved output options.
-\code{rdocx_document2} also supports cross reference based on the syntax of
-the bookdown package.
-}
 \section{R Markdown yaml}{
 
 The following demonstrates how to pass arguments in the R Markdown yaml:\preformatted{---
-title: "Word document"
 output:
-  bookdown::markdown_document2:
-  base_format: officedown::rdocx_document
-  tab_caption:
-    style: "Table Caption"
-    pre: "Table "
-    sep: ": "
-  plot_caption:
-    style: "Captioned Figure"
-    pre: "Figure "
-    sep: ": "
-  tab.style: "Table"
-  ol.style: "Default ol"
-  ul.style: "Default ul"
+  officedown::rdocx_document:
+    reference_docx: pandoc_template.docx
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Table Caption
+        pre: 'Table '
+        sep: ': '
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Image Caption
+        pre: 'Figure '
+        sep: ': '
+    lists:
+      ol.style: null
+      ul.style: null
 ---
 }
 }
