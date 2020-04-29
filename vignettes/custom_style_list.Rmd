@@ -20,7 +20,7 @@ library(officedown)
 
 ## Introduction 
 
-We will see how to define a new ***list style*** in a Microsoft Word document and how to benefit from formatting with R Markdown.  
+We will see how to define a new ***list style*** in a Microsoft Word document and how to benefit from formatting with `R Markdown`.  
   
   
 ![](screenshot/def_style_list.png){width=80%}
@@ -29,7 +29,7 @@ It will be necessary to use a ***Microsoft Word document "template "*** (ex: "te
 This template will serve as a reference document for the customization of your **list style**.  
   
   
-Later, the template will be filled in as the value of the `reference_docx` parameter. These parameters will be used for your future Word documents produced from R Markdown.
+Later, the template will be filled in as the value of the `reference_docx` parameter. These parameters will be used for your future Word documents produced from `R Markdown`.
 
 ## Usage
 
@@ -44,7 +44,7 @@ https://www.howtogeek.com/355561/how-to-create-and-work-with-multilevel-lists-in
 
 The `reference_docx` option allows you to call your template (document model) containing your customizations. 
 
-The `Rmarkdown` documentation on this topic is available via:  
+The `R Markdown` documentation on this topic is available via:  
 https://bookdown.org/yihui/rmarkdown/word-document.html  
 
 To enable this option, you will need to specify the `reference_docx` option in `YAML`.  
@@ -92,15 +92,15 @@ All you have to do is use your custom list styles.
 
 ## Example
 
-### Create a new Rmardown file
+### Create a new R Markdown file
 
-Open a new `Rmarkdown` file and choose `output: word_document`.  
+Open a new `R Markdown` file and choose `output: word_document`.  
   
-Now replace the content in your new Rmakdown file (after first chunk) by the text below.  
+Now replace the content in your new `R Markdown` file (after first chunk) by the text below.  
   
 As you can see, special character "*" or "1." with tabbed product shaping in you Word document output.  
 
-the main interest is to no longer manage list styles in your Rmardown document and use your own custome list style in Word document output.  
+the main interest is to no longer manage list styles in your `R Markdown` document and use your own custome list style in Word document output.  
   
 **Text to copy:**  
 
@@ -140,7 +140,7 @@ Tincidunt habitant sit.
 
 ### Use YAML 
 
-In the new Rmardown file, use option `reference_docx`:  
+In the new `R Markdown` file, use option `reference_docx`:  
   
 `````
 ---
@@ -159,4 +159,4 @@ Now in your Word output document apply your own style from your "template" and s
 
 ![](screenshot/my_style_word_output.png){width=80%}
 
-Now you can save time and no longer worry about formatting lists in your Rmarkdown document, just use your "template".
+Now you can save time and no longer worry about formatting lists in your `R Markdown` document, just use your "template".
