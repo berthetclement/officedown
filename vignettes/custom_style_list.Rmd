@@ -92,6 +92,18 @@ All you have to do is use your custom list styles.
 
 ## Example
 
+### Create a new Rmardown file
+
+Open a new `Rmarkdown` file and choose `output: word_document`.  
+  
+Now replace the content in your new Rmakdown file (after first chunk) by the text below.  
+  
+As you can see, special character "*" or "1." with tabbed product shaping in you Word document output.  
+
+the main interest is to no longer manage list styles in your Rmardown document and use your own custome list style in Word document output.  
+  
+**Text to copy:**  
+
 * Erat mauris egestas finibus tincidunt sed in rhoncus a tellus etiam. 
     - A adipiscing per ultricies justo tellus lorem. 
         - Imperdiet ut dui primis, sed gravida, at sed nulla. 
@@ -126,5 +138,25 @@ Tincidunt habitant sit.
 * In porttitor id lorem eu efficitur, nisl dis!
 
 
+### Use YAML 
 
+In the new Rmardown file, use option `reference_docx`:  
+  
+`````
+---
+title: "Untitled"
+output: 
+  officedown::rdocx_document:
+     reference_docx: template.docx
+---
+`````
 
+By default, i create a list style "my_style_1", you can create your own style.  
+
+![](screenshot/my_style_template.png){width=80%}
+
+Now in your Word output document apply your own style from your "template" and see what happens.  
+
+![](screenshot/my_style_word_output.png){width=80%}
+
+Now you can save time and no longer worry about formatting lists in your Rmarkdown document, just use your "template".
